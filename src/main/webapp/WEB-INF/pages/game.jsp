@@ -4,21 +4,30 @@
 <html>
 <head>
 
-    <title>Добро пожаловать, JSP!</title>
+    <title>Тестирование</title>
 </head>
 <body>
 
 <form method="get" action="/game">
-    <h1>Добро пожаловать!</h1>
-    <c:forEach items="${qList}" var="quest">
+    <h1>Пройдите тестирование</h1>
+    <c:forEach items="${qSet}" var="quest">
         <div>
             <div>
-                    ${quest.question}<br><br>
+                <div><label>Вопрос: </label>${quest.question}<br></div>
+
                 <c:forEach items="${quest.answers}" var="map">
-                    ${map.key}<br>
+
+                    <div>
+                        <label>Ответ: </label>${map.key}<br>
+                        <label>Правильный: </label>${map.value}<br>
+                    </div>
+
                 </c:forEach>
+                <%--<div><label>Тип: </label>
+                        <c:if test="${quest.questType}">С выбором ответа</c:if>
+                        <c:if test="${!quest.questType}">С Развернутым ответом</c:if>
+                </div>--%>
                 <br>
-                    ${quest.questType}
             </div>
         </div>
     </c:forEach>

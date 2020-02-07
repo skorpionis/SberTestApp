@@ -5,15 +5,16 @@
 <html>
 <head>
 
-    <title>Добро пожаловать, JSP!</title>
+    <title>Добро пожаловать</title>
 </head>
 <body>
-<h1>Добро пожаловать!dfd</h1>
+<h1>Добро пожаловать!</h1>
 <form method="get" action="/">
     <h1>Добро пожаловать!</h1>
 
 </form>
 <a href="game">Тест ссылка</a>
 <a href="registration">Страница регистрации</a>
+<a href="questions">Добавление своих новых вопросов</a>
 </body>
 </html>

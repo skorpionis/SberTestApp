@@ -7,7 +7,7 @@ import test.pack.dao.RegistrationDB;
 import java.util.List;
 
 @Service
-public class UserService implements US{
+public class UserService implements US {
     @Autowired
     RegistrationDB registrationDB;
 
@@ -21,12 +21,16 @@ public class UserService implements US{
             return false;
     }
 
-    public boolean isLoginExist(String login){
+    public boolean isLoginExist(String login) {
         return !registrationDB.checkingLoginCount(login);
     }
 
     @Override
     public List<String> getAllLogins() {
         return null;
+    }
+
+    public Integer getIdByLogin(String login) {
+        return registrationDB.getIdByUserLogin(login);
     }
 }

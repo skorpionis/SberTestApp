@@ -8,5 +8,6 @@ public interface RegistrationDB {
      void addUserToBD(String userName);
      boolean checkingLoginCount(String login);
 
+     Integer getIdByUserLogin(String login);
      List<String> getAllLogins();
 }

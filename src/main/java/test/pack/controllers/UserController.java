@@ -2,19 +2,17 @@ package test.pack.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
-
-import org.springframework.util.MimeType;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import test.pack.Question;
 import test.pack.dao.AnswerDB;
 import test.pack.services.QuestionService;
+import test.pack.services.UserService;
 
-
-import java.util.List;
+import java.security.Principal;
+import java.util.Set;
 
 @Controller
 //@RequestMapping("/test")
@@ -25,6 +23,9 @@ public class UserController {
     @Autowired
     QuestionService service;
 
+    @Autowired
+    UserService userService;
+
     //Добавление вопроса и ответа
     /*@GetMapping("/game")
     public String userEditForm(@RequestParam String q,
@@ -34,17 +35,30 @@ public class UserController {
     }*/
 
     @GetMapping("/")
-    public String getMain(){
+    public String getMain() {
         return "main";
     }
 
     @GetMapping("/game")
     public ModelAndView startTest() {
-        List<Question> list = service.prepare5Quests();
+        Set<Question> set = service.prepare5Quests();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("game");
-        modelAndView.addObject("qList", list);
-        //model.addAttribute("qList", list);
+        modelAndView.addObject("qSet", set);
         return modelAndView;
+    }
+
+    @GetMapping("/questions")
+    public String getNewQuestions() {
+        return "questions";
+    }
+
+    @PostMapping("/questions")
+    public String addNewAnswersAndQuestions(Principal principal, Model model, String question, String answer, boolean typeOfAnswers) {
+        String authenticatedUser = principal.getName();
+        Integer userId = userService.getIdByLogin(authenticatedUser);
+        answerDB.addAnswersToBD(question, answer, typeOfAnswers, userId);
+        model.addAttribute("successPutting", "Успешно добавлено");
+        return "questions";
     }
 }

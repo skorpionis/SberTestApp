@@ -5,10 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import test.pack.Question;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class AnswerDBImpl implements AnswerDB {
@@ -19,13 +16,13 @@ public class AnswerDBImpl implements AnswerDB {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private static Integer questionsCount;
+    private static List<Integer> questionsIds;
 
     String selectAllAnswerFromBd = "SELECT answer FROM ANSWERS_TABLE";
     String addAnswersSQL = "INSERT INTO ANSWERS_TABLE (answer) VALUES (?);";
-    String addQuestionsSQL = "INSERT INTO QUESTIONS_TABLE (question, answer_id) VALUES (?, ?);";
+    String addQuestionsSQL = "INSERT INTO QUESTIONS_TABLE (question, answer_id, user_id) VALUES (?, ?, ?);";
 
-    String questionsCountSQL = "SELECT COUNT(question) from QUESTIONS_TABLE;";
+    String idListSQL = "SELECT id from QUESTIONS_TABLE;";
     String getRandomQuestSQL = "SELECT question, answer_id FROM QUESTIONS_TABLE WHERE id = ?";
 
     @Override
@@ -34,10 +31,10 @@ public class AnswerDBImpl implements AnswerDB {
     }
 
     @Override
-    public void addAnswersToBD(String question, String answer, boolean type) {
+    public void addAnswersToBD(String question, String answer, boolean type, Integer usersID) {
         jdbcTemplate.update(addAnswersSQL, answer);
         Integer answerId = jdbcTemplate.queryForObject("SELECT id FROM ANSWERS_TABLE WHERE answer=? limit 1", Integer.class, answer);
-        jdbcTemplate.update(addQuestionsSQL, question, answerId);
+        jdbcTemplate.update(addQuestionsSQL, question, answerId, usersID);
         
     }
 
@@ -45,9 +42,13 @@ public class AnswerDBImpl implements AnswerDB {
     public Question getRandomQuestion() {
         Random random = new Random(17);
 
-        questionsCount = jdbcTemplate.queryForObject(questionsCountSQL, Integer.class);
+        questionsIds = jdbcTemplate.queryForList(idListSQL, Integer.class);
+        Collections.shuffle(questionsIds);
 
-        Map<String, Object> stringObjectMap = jdbcTemplate.queryForMap(getRandomQuestSQL, random.nextInt(questionsCount));
+        //Integer id = questionsIds.get(random.nextInt(questionsIds.size()));
+        Integer id = questionsIds.remove(0);
+        //questionsIds.remove(0);
+        Map<String, Object> stringObjectMap = jdbcTemplate.queryForMap(getRandomQuestSQL, id);
         String quest = (String) stringObjectMap.get("question");
         Integer ans_id = (Integer)stringObjectMap.get("answer_id");
         return new Question(quest, collect4Ans(ans_id), false);

@@ -1,6 +1,7 @@
 package test.pack;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Question {
 
@@ -46,5 +47,20 @@ public class Question {
                 ", answers=" + answers +
                 ", questType=" + questType +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question1 = (Question) o;
+        return questType == question1.questType &&
+                Objects.equals(question, question1.question);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(question, questType);
     }
 }

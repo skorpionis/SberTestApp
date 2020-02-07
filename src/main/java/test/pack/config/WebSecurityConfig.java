@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import test.pack.config.authProvider.MyAuthProvider;
 import test.pack.services.UserService;
 
-import javax.sql.DataSource;
-
 @Configuration
 @ComponentScan(basePackages = "test.pack")
 @EnableWebSecurity
@@ -26,7 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .authorizeRequests()
                 .antMatchers("/", "/registration").permitAll()   //разрешает войти по таким адресам + папка
                 .anyRequest().authenticated()
                 .and()
@@ -49,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth){
         auth.authenticationProvider(provider);
     }
 }

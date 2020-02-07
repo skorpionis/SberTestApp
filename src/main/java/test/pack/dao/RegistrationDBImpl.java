@@ -3,7 +3,6 @@ package test.pack.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ public class RegistrationDBImpl implements RegistrationDB {
     JdbcTemplate jdbcTemplate;
     String loginRequest = "SELECT login FROM LOGIN_TABLE WHERE login=?;";
     String addLoginSQL = "INSERT INTO LOGIN_TABLE (login) VALUES (?);";
+    String idByLogin = "SELECT id from LOGIN_TABLE WHERE login = ?";
 
     @Override
     public String userLogin(String loginName) {
@@ -24,7 +24,7 @@ public class RegistrationDBImpl implements RegistrationDB {
 
     @Override
     public void addUserToBD(String userName) {
-            jdbcTemplate.update(addLoginSQL, userName);
+        jdbcTemplate.update(addLoginSQL, userName);
     }
 
     public boolean checkingLoginCount(String login) {
@@ -36,5 +36,10 @@ public class RegistrationDBImpl implements RegistrationDB {
     @Override
     public List<String> getAllLogins() {
         return null;
+    }
+
+    @Override
+    public Integer getIdByUserLogin(String login) {
+        return jdbcTemplate.queryForObject(idByLogin, Integer.class, login);
     }
 }

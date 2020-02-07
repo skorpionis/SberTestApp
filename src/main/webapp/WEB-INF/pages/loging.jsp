@@ -7,9 +7,6 @@
 <body>
 <form method="post" action="/loging">
     <h1>Login</h1>
-    <%--<c:if test="${usernameErrorLogin != null}">
-        <h3>${usernameErrorLogin}</h3>
-    </c:if>--%>
     <div class="form-group row">
         <label>Введите имя пользователя</label>
         <div>
