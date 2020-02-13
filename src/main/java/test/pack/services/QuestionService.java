@@ -1,40 +1,17 @@
 package test.pack.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import test.pack.Question;
-import test.pack.dao.AnswerDB;
+import test.pack.model.Question;
+import test.pack.model.Task;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
-@Service
-public class QuestionService {
+public interface QuestionService {
 
-    @Autowired
-    private AnswerDB answerDB;
+    Map<Question, Map<String, Boolean>> prepareQuestsForTask();
 
+    void addQuestion(String question, String answers, boolean questionType, Integer userId);
 
-    public Set<Question> prepare5Quests() {
-        Set<Question> set = new HashSet<>();
-        while (set.size() < 5) {
-            set.add(answerDB.getRandomQuestion());
-        }
-        return set;
-    }
+    Task createTask();
 
-    public void addAnswersToBD(String question, String answers, boolean questionType, Integer userId) {
-        answerDB.addAnswersToBD(question, answers, questionType, userId);
-    }
-
-
-    /*@Override
-    public void addAnswersToBD(String question, String answer, boolean type) {
-        jdbcTemplate.update(addAnswersSQL, answer);
-        Integer answerId = jdbcTemplate.queryForObject("SELECT id FROM ANSWERS_TABLE
-        WHERE answer=? limit 1", Integer.class, answer);
-        jdbcTemplate.update(addQuestionsSQL, question, answerId);
-
-    }*/
 
 }

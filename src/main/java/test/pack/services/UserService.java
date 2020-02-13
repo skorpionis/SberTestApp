@@ -1,36 +1,13 @@
 package test.pack.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import test.pack.dao.RegistrationDB;
-
 import java.util.List;
 
-@Service
-public class UserService implements US {
-    @Autowired
-    RegistrationDB registrationDB;
+public interface UserService {
+    boolean checkIfExistsUser(String login, String password);
 
-    public boolean checkIfExistsUser(String login) {
-        if (!isLoginExist(login)) {
-            if (!login.equals("")) {
-                registrationDB.addUserToBD(login);
-            }
-            return true;
-        } else
-            return false;
-    }
+    boolean isLoginExist(String login);
 
-    public boolean isLoginExist(String login) {
-        return !registrationDB.checkingLoginCount(login);
-    }
+    List<String> getAllLogins();
 
-    @Override
-    public List<String> getAllLogins() {
-        return null;
-    }
-
-    public Integer getIdByLogin(String login) {
-        return registrationDB.getIdByUserLogin(login);
-    }
+    Integer getIdByLogin(String login);
 }

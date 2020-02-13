@@ -3,34 +3,53 @@
 
 <html>
 <head>
-
     <title>Тестирование</title>
+    <style>
+        #mainPageTitle {
+            text-align: center;
+        }
+
+        #testForm {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-
-<form method="get" action="/game">
-    <h1>Пройдите тестирование</h1>
-    <c:forEach items="${qSet}" var="quest">
-        <div>
-            <div>
-                <div><label>Вопрос: </label>${quest.question}<br></div>
-
-                <c:forEach items="${quest.answers}" var="map">
-
-                    <div>
-                        <label>Ответ: </label>${map.key}<br>
-                        <label>Правильный: </label>${map.value}<br>
-                    </div>
-
-                </c:forEach>
-                <%--<div><label>Тип: </label>
-                        <c:if test="${quest.questType}">С выбором ответа</c:if>
-                        <c:if test="${!quest.questType}">С Развернутым ответом</c:if>
-                </div>--%>
-                <br>
-            </div>
+<form method="post" action="/game">
+    <div id="testForm">
+        <div id="mainPageTitle">
+            <h1>Пройдите тестирование</h1>
         </div>
-    </c:forEach>
+        <c:forEach items="${quests}" var="quest" >
+            <div>
+                <div>
+                    <div><label>Вопрос: </label>${quest.key.question}<br></div>
+
+                    <c:if test="${quest.key.questType}">
+
+                        <c:forEach items="${quest.value}" var="map">
+                            <div>
+                                <label>Ответ: </label>${map.key}<br>
+                                <div><input type="checkbox"/></div>
+                            </div>
+                        </c:forEach>
+
+                    </c:if>
+                    <c:if test="${!quest.key.questType}">
+                        <label>
+                            <input type="text" name="ans"/>
+                        </label>
+                    </c:if>
+                    <br>
+                </div>
+            </div>
+            <label>------------------------------------------</label><br>
+        </c:forEach>
+        <div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+            <button type="submit">Сдать ответы</button>
+        </div>
+    </div>
 </form>
 </body>
 </html>

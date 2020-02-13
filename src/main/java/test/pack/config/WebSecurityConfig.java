@@ -1,26 +1,23 @@
 package test.pack.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import test.pack.config.authProvider.MyAuthProvider;
-import test.pack.services.UserService;
 
 @Configuration
 @ComponentScan(basePackages = "test.pack")
 @EnableWebSecurity
-
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    UserService userService;
+    private final AuthenticationProvider provider;
 
-    @Autowired
-    MyAuthProvider provider;
+    public WebSecurityConfig(AuthenticationProvider provider) {
+        this.provider = provider;
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -39,16 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-          .withUser("user1");
-    }*/
-
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth){
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(provider);
     }
 }

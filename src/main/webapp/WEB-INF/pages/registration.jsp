@@ -13,9 +13,13 @@
         <h3>${usernameError}</h3>
     </c:if>
     <div class="form-group row">
-        <label>Введите имя пользователя</label>
+        <label>Введите логин</label>
         <div>
-            <input type="text" name="userName" />
+            <input type="text" name="login" />
+        </div>
+        <label>Введите пароль</label>
+        <div>
+            <input type="password" name="password" />
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <button type="submit">Подтвердить</button>
